@@ -1,0 +1,72 @@
+import { StyleSheet, Dimensions } from 'react-native';
+import { COLORS } from '../colors';
+const { width, height } = Dimensions.get('window');
+export const slidingMenuStyles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.23)',
+    flexDirection: 'row',
+  },
+  menuContainer: {
+    width: width * 0.55,
+    height: height,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 2,
+      height: 0,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 5,
+    borderTopRightRadius: 50,    //  esquinas derechas
+    borderBottomRightRadius: 50, //  esquinas derechas
+    overflow: 'hidden',          // el degradado respete los bordes
+  },
+  menuBackground: {
+    flex: 1,
+    backgroundColor: COLORS.thirdShade,
+    borderTopRightRadius: 25,    // Repetir en el degradado
+    borderBottomRightRadius: 25, // Repetir en el degradado
+  },
+  menuHeader: {
+    paddingTop: 50,
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: COLORS.third,
+  },
+  menuTitle: {
+    color: COLORS.primary,
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  menuItems: {
+    flex: 1,
+    paddingTop: 20,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#00000000',
+  },
+  menuItemText: {
+    fontSize: 18,
+    color: COLORS.secondary,
+    fontWeight: '500',
+  },
+  menuFooter: {
+    padding: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#00000000',
+    alignItems: 'center',
+  },
+  footerText: {
+    color: COLORS.third,
+    fontSize: 12,
+  },
+});
