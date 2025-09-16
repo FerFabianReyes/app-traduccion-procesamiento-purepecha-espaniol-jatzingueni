@@ -12,9 +12,9 @@ export const globalStyles = StyleSheet.create({
   mainContent: {
     backgroundColor: COLORS.secondary,
     borderRadius: 20,
-    margin: 15,
+    margin: 30,
     padding: 20,
-    marginTop: 25,
-    minHeight: height * 0.45,
+    marginTop: 0,
+    minHeight: height * 0.6,
   },
 });

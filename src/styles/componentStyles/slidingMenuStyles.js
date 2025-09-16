@@ -24,7 +24,7 @@ export const slidingMenuStyles = StyleSheet.create({
   },
   menuBackground: {
     flex: 1,
-    backgroundColor: COLORS.thirdShade,
+    backgroundColor: COLORS.third,
     borderTopRightRadius: 25,    // Repetir en el degradado
     borderBottomRightRadius: 25, // Repetir en el degradado
   },
@@ -35,10 +35,10 @@ export const slidingMenuStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: COLORS.third,
+    backgroundColor: COLORS.thirdShade,
   },
   menuTitle: {
-    color: COLORS.primary,
+    color: COLORS.secondary,
     fontSize: 24,
     fontWeight: 'bold',
   },
@@ -56,7 +56,7 @@ export const slidingMenuStyles = StyleSheet.create({
   },
   menuItemText: {
     fontSize: 18,
-    color: COLORS.secondary,
+    color: COLORS.secondaryShade,
     fontWeight: '500',
   },
   menuFooter: {
@@ -66,7 +66,7 @@ export const slidingMenuStyles = StyleSheet.create({
     alignItems: 'center',
   },
   footerText: {
-    color: COLORS.third,
+    color: COLORS.thirdShade,
     fontSize: 12,
   },
 });
