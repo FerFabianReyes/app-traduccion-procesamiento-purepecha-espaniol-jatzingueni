@@ -1,4 +1,5 @@
 export const COLORS = {
+  primaryShine: '#44549cff',
   primary: '#1D2A62',
   secondary: '#F4F4E0',
   secondaryShade: '#eeeed8c9',
