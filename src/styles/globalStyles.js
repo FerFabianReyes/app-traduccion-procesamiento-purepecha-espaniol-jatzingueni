@@ -10,9 +10,9 @@ export const globalStyles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight || 0,
   },
   mainContent: {
+    flex: 1,
     backgroundColor: COLORS.primary,
     borderRadius: 40,
-    //margin: 30,
     padding: 20,
     marginTop: 0,
     minHeight: height,

@@ -8,7 +8,7 @@ export const noteCardStyles = StyleSheet.create({
     borderColor: COLORS.cardBorder,
     borderRadius: 8,
     marginBottom: 15,
-    minHeight: 100,
+    height: 150,
     padding: 15,
   },
   noteInput: {

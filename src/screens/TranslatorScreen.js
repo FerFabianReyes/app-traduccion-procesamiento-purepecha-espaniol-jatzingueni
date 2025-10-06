@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, ScrollView, Platform } from 'react-native';
+import { SafeAreaView, View, ScrollView, Platform, StyleSheet } from 'react-native';
 import Header from '../components/common/Header';
 import LanguageSelector from '../components/common/LanguageSelector';
 import NoteCard from '../components/translator/NoteCard';
@@ -20,25 +20,28 @@ const TranslatorScreen = () => {
     closeMenu,
   } = useTranslator();
 
-  // Usar View normal en web, SafeAreaView en móvil
   const Container = Platform.OS === 'web' ? View : SafeAreaView;
 
   return (
     <Background>
       <Container style={globalStyles.container}>
+        {/* Header fijo */}
         <Header onMenuPress={handleMenuPress} />
 
         <View style={globalStyles.mainContent}>
-          <ScrollView
-            style={{ flex: 1, paddingHorizontal: 20 }}
-            showsVerticalScrollIndicator={false}
-          >
-            <LanguageSelector
-              sourceLanguage={sourceLanguage}
-              targetLanguage={targetLanguage}
-              onSwap={swapLanguages}
-            />
+          {/* LanguageSelector fijo */}
+          <LanguageSelector
+            sourceLanguage={sourceLanguage}
+            targetLanguage={targetLanguage}
+            onSwap={swapLanguages}
+          />
 
+          {/* Solo los NoteCards tienen scroll */}
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            bounces={true}
+            keyboardShouldPersistTaps="handled"
+          >
             {notes.map((note, index) => (
               <NoteCard
                 key={index}
