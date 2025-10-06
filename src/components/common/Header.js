@@ -19,8 +19,11 @@ const Header = ({ title = "J'atzingueni", onMenuPress }) => {
         <View style={headerStyles.menuLine}></View>
       </TouchableOpacity>
 
-      <Text style={headerStyles.title}>{title}</Text>
-       <Icon />
+      {/* Contenedor para texto e ícono */}
+      <View style={headerStyles.titleContainer}>
+        <Text style={headerStyles.title}>{title}</Text>
+        <Icon/>
+      </View>
     </View>
   );
 };

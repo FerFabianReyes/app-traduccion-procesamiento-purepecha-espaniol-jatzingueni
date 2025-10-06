@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import LogoSvg from '../../../assets/logoJatzingueniClaro.svg';
 
-export default function Icon({ size = 350, top = 10, left = 130, right, bottom }) {
+export default function Icon({ size = 350, top = -75, left = 110, right, bottom }) {
   return (
     <View 
       style={[

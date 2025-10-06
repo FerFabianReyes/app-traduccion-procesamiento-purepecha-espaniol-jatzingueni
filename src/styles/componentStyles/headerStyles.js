@@ -42,7 +42,7 @@ export const headerStyles = StyleSheet.create({
     width: '100%',
     height: 3,
     backgroundColor: COLORS.fourth,
-    borderRadius: 2,
+    borderRadius: 20,
   },
   title: {
     fontSize: 40,
@@ -59,4 +59,9 @@ export const headerStyles = StyleSheet.create({
       }
     })
   },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center', 
+  }
 });
