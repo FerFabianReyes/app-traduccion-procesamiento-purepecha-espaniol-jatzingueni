@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import { headerStyles } from '../../styles/componentStyles/headerStyles';
+import Icon from './IconJatzi';
 
 const Header = ({ title = "J'atzingueni", onMenuPress }) => {
   return (
@@ -19,6 +20,7 @@ const Header = ({ title = "J'atzingueni", onMenuPress }) => {
       </TouchableOpacity>
 
       <Text style={headerStyles.title}>{title}</Text>
+       <Icon />
     </View>
   );
 };

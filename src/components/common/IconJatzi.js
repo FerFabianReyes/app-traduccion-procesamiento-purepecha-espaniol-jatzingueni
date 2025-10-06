@@ -1,25 +1,37 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Icon from '../../../assets/logoJatzingueniClaro.svg';
-import { Icon } from 'react-native-vector-icons/Icon';
+import LogoSvg from '../../../assets/logoJatzingueniClaro.svg';
 
-export default function IconJatzi({ children }) {
+export default function Icon({ size = 350, top = 10, left = 130, right, bottom }) {
   return (
-    <View style={styles.container}>
-      <Icon
-        width="80%"
-        height="80%"
-        preserveAspectRatio="xMidYMid slice"
-        style={StyleSheet.absoluteFillObject}
+    <View 
+      style={[
+        styles.container, 
+        { 
+          width: size, 
+          height: size,
+          top,
+          left,
+          right,
+          bottom,
+          
+        }
+      ]}
+      pointerEvents="none"
+    >
+      <LogoSvg
+        width={size}
+        height={size}
       />
-      {children}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: 'transparent'
+    position: 'absolute', 
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1110,
   },
 });
