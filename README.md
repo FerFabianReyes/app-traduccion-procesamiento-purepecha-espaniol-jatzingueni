@@ -1,14 +1,8 @@
-Crear proyecto en react
-Se necesita node y npm
-npm install -g @expo/cli
+# J'atzingueni
+Proyecto iniciado por estudiantes de la Facultad de Ingeniería Eléctrica de la Universidad Michoacana de San Nicolás de Hidalgo.
 
-npx create-expo-app@latest nombre --template blank
+Este proyecto consiste en el entrenamiento de un modelo de PLN en PyTorch, la generación del corpus para el entrenamiento de dicho modelo, así como el desarrollo de una aplicación móvil de procesamiento, interpretación y generación de texto en Purépecha. Estas tres partes del proyecto general conforman lo que es "J'atzingueni".
 
-npx expo install react-dom react-native-web @expo/metro-runtime
-es para web ya que --template blank no lo agrega
+Las otras partes del proyecto se encuentran en [Modelo Traductor Purépecha-Español](https://github.com/BAPE77/modelo-traductor-purepecha-espaniol-jatzingueni.git) y [Aplicación Móvil de Traducción y Procesamiento de Texto Purépecha-Español](https://github.com/FerFabianReyes/app-traduccion-procesamiento-purepecha-espaniol-caniademaiz.git)
 
-npx expo start
-
-Problemas con Expo go y wsl:
-sudo npm install -g @expo/ngrok@^4.1.0
-npx expo start --tunnel
+# Aplicación Móvil para el traductor Purépecha-Español "J'atzingueni"
