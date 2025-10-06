@@ -6,15 +6,15 @@ const { height } = Dimensions.get('window');
 export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.primary,
+    backgroundColor: 'transparent',
     paddingTop: StatusBar.currentHeight || 0,
   },
   mainContent: {
-    backgroundColor: COLORS.secondary,
-    borderRadius: 20,
-    margin: 30,
+    backgroundColor: COLORS.primary,
+    borderRadius: 40,
+    //margin: 30,
     padding: 20,
     marginTop: 0,
-    minHeight: height * 0.6,
+    minHeight: height,
   },
 });

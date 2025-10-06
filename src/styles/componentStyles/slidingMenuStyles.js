@@ -35,10 +35,10 @@ export const slidingMenuStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: COLORS.thirdShade,
+    backgroundColor: COLORS.thirdClear,
   },
   menuTitle: {
-    color: COLORS.secondary,
+    color: COLORS.third,
     fontSize: 24,
     fontWeight: 'bold',
   },
@@ -56,7 +56,7 @@ export const slidingMenuStyles = StyleSheet.create({
   },
   menuItemText: {
     fontSize: 18,
-    color: COLORS.secondaryShade,
+    color: COLORS.fourth,
     fontWeight: '500',
   },
   menuFooter: {
@@ -66,7 +66,7 @@ export const slidingMenuStyles = StyleSheet.create({
     alignItems: 'center',
   },
   footerText: {
-    color: COLORS.thirdShade,
+    color: COLORS.thirdClear,
     fontSize: 12,
   },
 });

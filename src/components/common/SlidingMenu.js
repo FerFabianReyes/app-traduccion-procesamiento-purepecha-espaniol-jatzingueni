@@ -66,7 +66,7 @@ const SlidingMenu = ({ isVisible, onClose }) => {
                 
                 {/* Header del menú */}
                 <View style={slidingMenuStyles.menuHeader}>
-                  <Text style={slidingMenuStyles.menuTitle}>Kuinchekua</Text>
+                  <Text style={slidingMenuStyles.menuTitle}>Contenido</Text>
                 </View>
 
                 {/* Items del menú */}

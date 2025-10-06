@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import { headerStyles } from '../../styles/componentStyles/headerStyles';
 
-const Header = ({ title = "Kuinchekua", onMenuPress }) => {
+const Header = ({ title = "J'atzingueni", onMenuPress }) => {
   return (
     <View style={headerStyles.header}>
       <TouchableOpacity 

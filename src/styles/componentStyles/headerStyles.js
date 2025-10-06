@@ -19,7 +19,7 @@ export const headerStyles = StyleSheet.create({
     width: 30,
     height: 20,
     position: 'absolute',
-    margin: 35,
+    margin: 40,
     justifyContent: 'space-between',
     zIndex: 1001, // Asegura que esté por encima
     ...Platform.select({
@@ -41,16 +41,16 @@ export const headerStyles = StyleSheet.create({
   menuLine: {
     width: '100%',
     height: 3,
-    backgroundColor: COLORS.fourthLight,
+    backgroundColor: COLORS.fourth,
     borderRadius: 2,
   },
   title: {
     fontSize: 40,
     fontWeight: 'bold',
-    color: COLORS.secondary,
-    position: 'absolute',
+    color: COLORS.fourth,
+    position: 'left',
     top: 70,
-    left: 0,
+    left: 10,
     right: 0,
     textAlign: 'center',
     ...Platform.select({

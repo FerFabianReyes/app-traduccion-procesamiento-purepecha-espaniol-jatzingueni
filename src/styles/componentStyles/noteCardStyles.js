@@ -3,7 +3,7 @@ import { COLORS } from '../colors';
 
 export const noteCardStyles = StyleSheet.create({
   noteCard: {
-    backgroundColor: COLORS.secondaryShade,
+    backgroundColor: COLORS.primary,
     borderWidth: 2,
     borderColor: COLORS.cardBorder,
     borderRadius: 8,
