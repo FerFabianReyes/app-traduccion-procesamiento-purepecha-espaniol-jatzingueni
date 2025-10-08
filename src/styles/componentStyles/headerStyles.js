@@ -35,7 +35,6 @@ export const headerStyles = StyleSheet.create({
     })
   },
   menuButtonWeb: {
-    // Estilos adicionales específicos para web
     transform: [{ translateZ: 0 }], // Ayuda con el rendering en web
   },
   menuLine: {
@@ -49,10 +48,10 @@ export const headerStyles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.fourth,
     position: 'left',
-    top: 70,
+    top: 60,
     left: 10,
     right: 0,
-    textAlign: 'center',
+    textAlign: 'left',
     ...Platform.select({
       web: {
         pointerEvents: 'none', // No interferir con clicks

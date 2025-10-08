@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
-import BackgroundSvg from '../../../assets/fondoJatzingueniPrincipal.svg';
+import BackgroundSvg from '../../../assets/fondoJatzingueniAcercaDe.svg';
 import { COLORS } from '../../styles/colors';
 
 const { height, width } = Dimensions.get('window');

@@ -1,13 +1,13 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
-import TranslatorScreen from './src/screens/TranslatorScreen';
+import AppNavigator from './src/navigation/AppNavigator';
 import { COLORS } from './src/styles/colors';
 
 export default function App() {
   return (
     <>
-      <StatusBar backgroundColor= {COLORS.secondary}  barStyle="light-content" />
-      <TranslatorScreen />
+      <StatusBar backgroundColor={COLORS.secondary} barStyle="light-content" />
+      <AppNavigator />
     </>
   );
 }

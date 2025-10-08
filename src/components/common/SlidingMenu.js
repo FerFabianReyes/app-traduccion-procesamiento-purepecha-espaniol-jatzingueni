@@ -8,11 +8,13 @@ import {
   TouchableWithoutFeedback,
   Animated
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { slidingMenuStyles } from '../../styles/componentStyles/slidingMenuStyles';
 
 const { width } = Dimensions.get('window');
 
 const SlidingMenu = ({ isVisible, onClose }) => {
+  const navigation = useNavigation();
   const slideAnim = React.useRef(new Animated.Value(-width)).current;
 
   React.useEffect(() => {
@@ -32,13 +34,18 @@ const SlidingMenu = ({ isVisible, onClose }) => {
   }, [isVisible]);
 
   const menuItems = [
-    { id: 1, title: 'Traductor'},
-    { id: 2, title: 'Acerca de'},
+    { id: 1, title: 'Traductor', screen: 'Translator' },
+    { id: 2, title: 'Acerca de', screen: 'About' },
   ];
 
   const handleItemPress = (item) => {
-    console.log(`Seleccionaste: ${item.title}`);
-    onClose();
+    console.log(`Navegando a: ${item.title}`);
+    onClose(); // Cerrar el menú primero
+    
+    // Pequeño delay para que la animación del menú se complete
+    setTimeout(() => {
+      navigation.navigate(item.screen);
+    }, 100);
   };
 
   return (
@@ -48,10 +55,8 @@ const SlidingMenu = ({ isVisible, onClose }) => {
       animationType="none"
       onRequestClose={onClose}
     >
-      {/* Overlay oscuro semi-transparente */}
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={slidingMenuStyles.overlay}>
-          {/* Contenedor del menú con el fondo COLORS.third */}
           <TouchableWithoutFeedback>
             <Animated.View 
               style={[
@@ -61,15 +66,12 @@ const SlidingMenu = ({ isVisible, onClose }) => {
                 }
               ]}
             >
-              {/* Fondo del menú con COLORS.third */}
               <View style={slidingMenuStyles.menuBackground}>
                 
-                {/* Header del menú */}
                 <View style={slidingMenuStyles.menuHeader}>
                   <Text style={slidingMenuStyles.menuTitle}>Contenido</Text>
                 </View>
 
-                {/* Items del menú */}
                 <View style={slidingMenuStyles.menuItems}>
                   {menuItems.map((item) => (
                     <TouchableOpacity
@@ -81,6 +83,7 @@ const SlidingMenu = ({ isVisible, onClose }) => {
                     </TouchableOpacity>
                   ))}
                 </View>
+                
                 <View style={slidingMenuStyles.menuFooter}>
                   <Text style={slidingMenuStyles.footerText}>Versión 1.0.0</Text>
                 </View>
