@@ -16,5 +16,4 @@ export const globalStyles = StyleSheet.create({
     padding: 20,
     marginTop: 0,
     minHeight: height,
-  },
-});
+}});

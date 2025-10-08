@@ -13,12 +13,13 @@ export const languageSelectorStyles = StyleSheet.create({
   languageText: {
     fontSize: 18,
     fontWeight: '600',
-    color: COLORS.primaryClear,
+    color: COLORS.thirdClear,
     flex: 1,
     textAlign: 'center',
+    
   },
   swapButton: {
-    backgroundColor: COLORS.primaryClear,
+    backgroundColor: COLORS.third,
     paddingHorizontal: 15,
     paddingVertical: 4,
     borderRadius: 20,

@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, TextInput } from 'react-native';
 import { noteCardStyles } from '../../styles/componentStyles/noteCardStyles';
+import { COLORS } from '../../styles/colors';
+
 
 const NoteCard = ({ 
   value, 
@@ -17,7 +19,7 @@ const NoteCard = ({
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
-        placeholderTextColor="#C8C8C8"
+        placeholderTextColor = {COLORS.textPrimary}
         multiline={true}
         textAlignVertical="top"
       />

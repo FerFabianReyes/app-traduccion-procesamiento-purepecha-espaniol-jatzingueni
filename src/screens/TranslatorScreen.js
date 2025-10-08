@@ -53,7 +53,7 @@ const TranslatorScreen = () => {
                   value={note}
                   onChangeText={(text) => updateNote(index, text)}
                   placeholder={index === 0 ? 'Texto a traducir...' : 'Traducción...'}
-                  isTranslated={index === 1}
+                  isTranslated={index === 1} placeholderTextColor="black"
                 />
               ))}
             </ScrollView>
