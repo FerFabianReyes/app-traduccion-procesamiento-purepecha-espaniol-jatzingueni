@@ -6,7 +6,7 @@ import { COLORS } from './src/styles/colors';
 export default function App() {
   return (
     <>
-      <StatusBar backgroundColor={COLORS.secondary} barStyle="light-content" />
+      <StatusBar backgroundColor={COLORS.primary} barStyle="light-content" />
       <AppNavigator />
     </>
   );

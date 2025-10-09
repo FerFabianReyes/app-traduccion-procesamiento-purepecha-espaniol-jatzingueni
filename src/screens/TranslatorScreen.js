@@ -6,7 +6,7 @@ import NoteCard from '../components/translator/NoteCard';
 import SlidingMenu from '../components/common/SlidingMenu';
 import { useTranslator } from '../hooks/useTranslator';
 import { globalStyles } from '../styles/globalStyles';
-import Background from '../components/common/Background';
+import Background from '../components/backgronds/Background';
 
 const TranslatorScreen = () => {
   const {

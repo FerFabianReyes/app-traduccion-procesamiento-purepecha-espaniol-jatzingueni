@@ -9,7 +9,10 @@ import {
   Animated
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 import { slidingMenuStyles } from '../../styles/componentStyles/slidingMenuStyles';
+import Background from '../backgronds/BackgroundMenu';
+import { COLORS } from '../../styles/colors';
 
 const { width } = Dimensions.get('window');
 
@@ -34,15 +37,25 @@ const SlidingMenu = ({ isVisible, onClose }) => {
   }, [isVisible]);
 
   const menuItems = [
-    { id: 1, title: 'Traductor', screen: 'Translator' },
-    { id: 2, title: 'Acerca de', screen: 'About' },
+    { 
+      id: 1, 
+      title: 'Traductor', 
+      screen: 'Translator',
+      icon: 'language-outline',
+      color: '#ececd0ff'
+    },
+    { 
+      id: 2, 
+      title: 'Acerca de', 
+      screen: 'About',
+      icon: 'information-circle-outline',
+      color: '#ebf1cfff'
+    },
   ];
 
   const handleItemPress = (item) => {
     console.log(`Navegando a: ${item.title}`);
-    onClose(); // Cerrar el menú primero
-    
-    // Pequeño delay para que la animación del menú se complete
+    onClose();
     setTimeout(() => {
       navigation.navigate(item.screen);
     }, 100);
@@ -61,33 +74,58 @@ const SlidingMenu = ({ isVisible, onClose }) => {
             <Animated.View 
               style={[
                 slidingMenuStyles.menuContainer,
-                {
-                  transform: [{ translateX: slideAnim }]
-                }
+                { transform: [{ translateX: slideAnim }] }
               ]}
             >
               <View style={slidingMenuStyles.menuBackground}>
+                <Background />
                 
-                <View style={slidingMenuStyles.menuHeader}>
-                  <Text style={slidingMenuStyles.menuTitle}>Contenido</Text>
-                </View>
+                <View style={slidingMenuStyles.menuContent}>
+                  <View style={slidingMenuStyles.menuHeader}>
+                    <Text style={slidingMenuStyles.menuTitle}>Menú</Text>
+                  </View>
 
-                <View style={slidingMenuStyles.menuItems}>
-                  {menuItems.map((item) => (
-                    <TouchableOpacity
-                      key={item.id}
-                      style={slidingMenuStyles.menuItem}
-                      onPress={() => handleItemPress(item)}
-                    >
-                      <Text style={slidingMenuStyles.menuItemText}>{item.title}</Text>
-                    </TouchableOpacity>
-                  ))}
+                  <View style={slidingMenuStyles.menuItems}>
+                    {menuItems.map((item, index) => (
+                      <TouchableOpacity
+                        key={item.id}
+                        style={[
+                          slidingMenuStyles.menuItem,
+                          index === 0 && { marginTop: 0 }
+                        ]}
+                        onPress={() => handleItemPress(item)}
+                        activeOpacity={0.7}
+                      >
+                        <View style={slidingMenuStyles.iconContainer}>
+                          <Ionicons 
+                            name={item.icon} 
+                            size={24} 
+                            color={item.color}
+                          />
+                        </View>
+                        <Text style={slidingMenuStyles.menuItemText}>
+                          {item.title}
+                        </Text>
+                        <Ionicons 
+                          name="chevron-forward-outline" 
+                          size={20} 
+                          color= {COLORS.iconsMenu}
+                          style={{ marginLeft: 'auto' }}
+                        />
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                  
+                  <View style={slidingMenuStyles.menuFooter}>
+                    <Ionicons 
+                      name="shield-checkmark-outline" 
+                      size={16} 
+                      color={COLORS.iconsMenu}
+                      style={{ marginRight: 6 }}
+                    />
+                    <Text style={slidingMenuStyles.footerText}>Versión 1.0.0</Text>
+                  </View>
                 </View>
-                
-                <View style={slidingMenuStyles.menuFooter}>
-                  <Text style={slidingMenuStyles.footerText}>Versión 1.0.0</Text>
-                </View>
-                
               </View>
             </Animated.View>
           </TouchableWithoutFeedback>

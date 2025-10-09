@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView, View, Text, Platform, ScrollView } from 'react-native';
-import Background from '../components/common/BackgroundAbout';
+import Background from '../components/backgronds/BackgroundAbout';
 import Header from '../components/common/Header';
 import SlidingMenu from '../components/common/SlidingMenu';
 import { aboutScreenStyles } from '../styles/aboutScreenStyles';

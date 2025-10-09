@@ -7,7 +7,7 @@ export const headerStyles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     paddingHorizontal: 20,
-    paddingVertical: 70,
+    paddingVertical: 60,
     ...Platform.select({
       web: {
         position: 'relative',
@@ -48,7 +48,7 @@ export const headerStyles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.fourth,
     position: 'left',
-    top: 60,
+    top: 65,
     left: 10,
     right: 0,
     textAlign: 'left',
