@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TranslatorScreen from '../screens/TranslatorScreen';
 import AboutScreen from '../screens/AboutScreen';
+import EjemploScreen from '../screens/OCR';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +23,7 @@ const AppNavigator = () => {
         />
         <Stack.Screen 
           name="About" 
-          component={AboutScreen} 
+          component={EjemploScreen} 
         />
       </Stack.Navigator>
     </NavigationContainer>

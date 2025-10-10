@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,40 +10,18 @@ import {
   Alert,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
-import { createWorker } from 'tesseract.js';
+// import * as FileSystem from 'expo-file-system'; // Ya no se necesita
+
+// OCR.space API Key (gratuita) - Registrate en https://ocr.space/ocrapi
+const OCR_API_KEY = 'K87899142388957'; // API key de prueba - obtén la tuya
 
 export default function OCRTranslateScreen() {
   const [image, setImage] = useState(null);
   const [extractedText, setExtractedText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
   const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [worker, setWorker] = useState(null);
-  const [autoProcessEnabled, setAutoProcessEnabled] = useState(true);
 
-  // Inicializar Tesseract worker al montar
-  useEffect(() => {
-    initializeTesseract();
-    return () => {
-      if (worker) {
-        worker.terminate();
-      }
-    };
-  }, []);
-
-  const initializeTesseract = async () => {
-    try {
-      const tesseractWorker = await createWorker('spa', 1, {
-        logger: m => console.log(m)
-      });
-      setWorker(tesseractWorker);
-    } catch (error) {
-      console.error('Error inicializando Tesseract:', error);
-    }
-  };
-
-  // Tomar foto y procesar automáticamente
+  // Tomar foto con cámara
   const takePhotoAndProcess = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     
@@ -54,7 +32,7 @@ export default function OCRTranslateScreen() {
 
     const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
-      quality: 1,
+      quality: 0.8,
       aspect: [4, 3],
     });
 
@@ -64,14 +42,12 @@ export default function OCRTranslateScreen() {
       setExtractedText('');
       setTranslatedText('');
       
-      // Procesar automáticamente si está habilitado
-      if (autoProcessEnabled) {
-        await processOCR(photoUri);
-      }
+      // Procesar automáticamente
+      await processOCR(photoUri);
     }
   };
 
-  // Seleccionar de galería y procesar automáticamente
+  // Seleccionar de galería
   const pickImageAndProcess = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     
@@ -83,7 +59,7 @@ export default function OCRTranslateScreen() {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      quality: 1,
+      quality: 0.8,
     });
 
     if (!result.canceled) {
@@ -92,102 +68,97 @@ export default function OCRTranslateScreen() {
       setExtractedText('');
       setTranslatedText('');
       
-      // Procesar automáticamente si está habilitado
-      if (autoProcessEnabled) {
-        await processOCR(photoUri);
-      }
+      // Procesar automáticamente
+      await processOCR(photoUri);
     }
   };
 
-  // Preprocesar imagen para mejor OCR
-  const preprocessImage = async (uri) => {
-    try {
-      const manipulated = await manipulateAsync(
-        uri,
-        [{ resize: { width: 2000 } }],
-        { 
-          compress: 1,
-          format: SaveFormat.PNG
-        }
-      );
-      return manipulated.uri;
-    } catch (error) {
-      console.error('Error preprocesando imagen:', error);
-      return uri;
-    }
-  };
-
-  // Procesar OCR con Tesseract
+  // Procesar OCR con OCR.space API
   const processOCR = async (imageUri = image) => {
     if (!imageUri) {
       Alert.alert('Error', 'Selecciona una imagen primero');
       return;
     }
 
-    if (!worker) {
-      Alert.alert('Inicializando', 'El OCR se está cargando, intenta nuevamente en un momento...');
-      await initializeTesseract();
-      return;
-    }
-
     setLoading(true);
     setExtractedText('');
     setTranslatedText('');
-    setProgress(0);
 
     try {
-      // Preprocesar imagen
-      const processedImage = await preprocessImage(imageUri);
+      // Crear FormData y enviar imagen directamente
+      const formData = new FormData();
+      
+      // Agregar imagen como archivo
+      formData.append('file', {
+        uri: imageUri,
+        type: 'image/jpeg',
+        name: 'photo.jpg',
+      });
+      
+      formData.append('language', 'spa'); // Español
+      formData.append('isOverlayRequired', 'false');
+      formData.append('detectOrientation', 'true');
+      formData.append('scale', 'true');
+      formData.append('OCREngine', '2'); // Motor 2 es mejor para español
 
-      // Reconocer texto
-      const { data } = await worker.recognize(processedImage, {
-        tessedit_pageseg_mode: '1',
-      }, {
-        logger: m => {
-          if (m.status === 'recognizing text') {
-            setProgress(Math.round(m.progress * 100));
-          }
-        }
+      const response = await fetch('https://api.ocr.space/parse/image', {
+        method: 'POST',
+        headers: {
+          'apikey': OCR_API_KEY,
+        },
+        body: formData,
       });
 
-      if (data.text.trim()) {
-        const cleanedText = data.text
-          .trim()
-          .replace(/\n{3,}/g, '\n\n')
-          .replace(/\s+/g, ' ');
+      const result = await response.json();
+
+      if (result.ParsedResults && result.ParsedResults.length > 0) {
+        const text = result.ParsedResults[0].ParsedText;
         
-        setExtractedText(cleanedText);
-        
-        // Simular traducción (aquí conectarías tu API/modelo de traducción)
-        translateToPurepecha(cleanedText);
+        if (text.trim()) {
+          // Limpiar texto
+          const cleanedText = text
+            .trim()
+            .replace(/\r\n/g, '\n')
+            .replace(/\n{3,}/g, '\n\n');
+          
+          setExtractedText(cleanedText);
+          
+          // Simular traducción
+          translateToPurepecha(cleanedText);
+        } else {
+          Alert.alert('Sin texto', 'No se detectó texto en la imagen');
+        }
+      } else if (result.IsErroredOnProcessing) {
+        Alert.alert('Error', result.ErrorMessage || 'Error al procesar la imagen');
       } else {
-        Alert.alert('Sin texto', 'No se detectó texto. Intenta con mejor iluminación.');
+        Alert.alert('Sin texto', 'No se detectó texto en la imagen');
       }
     } catch (error) {
       Alert.alert('Error', 'No se pudo procesar: ' + error.message);
-      console.error(error);
+      console.error('OCR Error:', error);
     } finally {
       setLoading(false);
-      setProgress(0);
     }
   };
 
   // Función simulada de traducción - REEMPLAZA CON TU API REAL
   const translateToPurepecha = (text) => {
     // Aquí conectarías tu modelo/API de traducción español-purépecha
-    // Por ahora solo mostramos un placeholder
-    setTranslatedText('(Traducción en desarrollo - conecta aquí tu modelo español-purépecha)');
+    setTranslatedText('(Conecta aquí tu modelo de traducción español-purépecha)');
     
-    // Ejemplo de cómo podría ser con una API:
+    // Ejemplo de cómo sería con una API:
     /*
-    fetch('https://tu-api.com/translate', {
+    fetch('https://tu-api-purepecha.com/translate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text, from: 'es', to: 'pur' })
     })
     .then(res => res.json())
     .then(data => setTranslatedText(data.translation))
-    .catch(err => console.error(err));
+    .catch(err => {
+      console.error(err);
+      setTranslatedText('Error al traducir');
+    });
     */
   };
 
@@ -196,7 +167,6 @@ export default function OCRTranslateScreen() {
     setImage(null);
     setExtractedText('');
     setTranslatedText('');
-    setProgress(0);
   };
 
   return (
@@ -237,9 +207,9 @@ export default function OCRTranslateScreen() {
           </View>
 
           <View style={styles.featuresList}>
-            <Text style={styles.featureItem}>✓ Reconocimiento automático</Text>
-            <Text style={styles.featureItem}>✓ Traducción instantánea</Text>
-            <Text style={styles.featureItem}>✓ 100% gratis y offline</Text>
+            <Text style={styles.featureItem}>✓ Reconocimiento automático con IA</Text>
+            <Text style={styles.featureItem}>✓ Alta precisión para español</Text>
+            <Text style={styles.featureItem}>✓ Funciona con Expo Go</Text>
           </View>
         </View>
       ) : (
@@ -259,7 +229,10 @@ export default function OCRTranslateScreen() {
             <View style={styles.loadingBox}>
               <ActivityIndicator size="large" color="#8b5cf6" />
               <Text style={styles.loadingText}>
-                {progress > 0 ? `Extrayendo texto... ${progress}%` : 'Procesando imagen...'}
+                Extrayendo texto con IA...
+              </Text>
+              <Text style={styles.loadingSubtext}>
+                Esto puede tardar unos segundos
               </Text>
             </View>
           )}
@@ -269,7 +242,7 @@ export default function OCRTranslateScreen() {
               style={styles.retryButton}
               onPress={() => processOCR()}
             >
-              <Text style={styles.retryButtonText}>🔍 Extraer Texto</Text>
+              <Text style={styles.retryButtonText}>🔍 Intentar de nuevo</Text>
             </TouchableOpacity>
           )}
 
@@ -302,6 +275,13 @@ export default function OCRTranslateScreen() {
                   </Text>
                 </ScrollView>
               </View>
+
+              <TouchableOpacity 
+                style={styles.shareButton}
+                onPress={() => Alert.alert('Compartir', 'Función de compartir próximamente')}
+              >
+                <Text style={styles.shareButtonText}>📤 Compartir traducción</Text>
+              </TouchableOpacity>
             </View>
           )}
         </View>
@@ -349,6 +329,7 @@ const styles = StyleSheet.create({
     color: '#64748b',
     textAlign: 'center',
     lineHeight: 24,
+    paddingHorizontal: 20,
   },
   mainButtonContainer: {
     gap: 15,
@@ -423,7 +404,7 @@ const styles = StyleSheet.create({
     padding: 30,
     borderRadius: 16,
     alignItems: 'center',
-    gap: 15,
+    gap: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -434,6 +415,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#64748b',
     fontWeight: '600',
+  },
+  loadingSubtext: {
+    fontSize: 13,
+    color: '#94a3b8',
   },
   retryButton: {
     backgroundColor: '#10b981',
@@ -493,5 +478,17 @@ const styles = StyleSheet.create({
   arrow: {
     fontSize: 32,
     color: '#8b5cf6',
+  },
+  shareButton: {
+    backgroundColor: '#3b82f6',
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginTop: 15,
+  },
+  shareButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
