@@ -41,7 +41,7 @@ const SlidingMenu = ({ isVisible, onClose }) => {
       id: 1, 
       title: 'Traductor', 
       screen: 'Translator',
-      icon: 'language-outline',
+      icon: 'newspaper-outline',
       color: '#ececd0ff'
     },
     { 

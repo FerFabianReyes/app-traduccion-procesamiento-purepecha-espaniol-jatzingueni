@@ -35,4 +35,24 @@ export const languageSelectorStyles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
   },
+    iconContainer: {
+    width: 35,
+    height: 35,
+    borderRadius: 10,
+    backgroundColor: COLORS.thirdClear,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 5,
+  },
+
+  cameraButton: {
+    padding: 8,
+    marginRight: 10,
+    borderRadius: 5,
+    borderWidth: 3,
+    borderRightColor: COLORS.third,
+    borderTopColor: 'transparent',
+    borderBottomColor: 'transparent',
+    borderLeftColor: 'transparent',
+  },
 });

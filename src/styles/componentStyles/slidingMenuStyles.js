@@ -11,7 +11,7 @@ export const slidingMenuStyles = StyleSheet.create({
   },
   
   menuContainer: {
-    width: width * 0.55,
+    width: width * 0.6,
     height: height,
     shadowColor: '#000',
     shadowOffset: {
@@ -31,15 +31,19 @@ export const slidingMenuStyles = StyleSheet.create({
     backgroundColor: COLORS.secondary,
     borderTopRightRadius: 25,
     borderBottomRightRadius: 25,
+    borderRightWidth: 3,
+    borderTopWidth: 3,
+    borderBottomWidth: 3,
+    borderColor: COLORS.secondaryClear,
     overflow: 'hidden',
-    shadowColor: '#000',
+    shadowColor: COLORS.secondaryClear,
     shadowOffset: {
       width: 4,
       height: 0,
     },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 10,
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    elevation: 15,
   },
   
   menuContent: {
@@ -85,10 +89,10 @@ export const slidingMenuStyles = StyleSheet.create({
   },
   
   iconContainer: {
-    width: 30,
-    height: 30,
+    width: 35,
+    height: 35,
     borderRadius: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: 'rgba(229, 255, 0, 0.2)',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 5,
@@ -109,6 +113,7 @@ export const slidingMenuStyles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#00000000',
   },
+  
   footerText: {
     color: COLORS.secondaryClear,
     fontSize: 12,

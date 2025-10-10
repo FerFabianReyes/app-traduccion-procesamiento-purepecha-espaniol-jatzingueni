@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import { headerStyles } from '../../styles/componentStyles/headerStyles';
 import Icon from './IconJatzi';
 
+
 const Header = ({ title = "J'atzingueni", onMenuPress }) => {
   return (
     <View style={headerStyles.header}>

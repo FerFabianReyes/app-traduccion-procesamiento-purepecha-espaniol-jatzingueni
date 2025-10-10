@@ -9,14 +9,15 @@ export const aboutScreenStyles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    padding: 25,
-    paddingTop: 10,
+    padding: 20,
+    paddingTop: 15,
   },
   subtitle: {
     fontSize: 18,
-    color: COLORS.thirdClear,
+    color: COLORS.primaryClear,
     textAlign: 'center',
-    margin: 20,
+    marginTop: 50,
+    marginBottom: 10,
   },
   section: {
     marginBottom: 60,

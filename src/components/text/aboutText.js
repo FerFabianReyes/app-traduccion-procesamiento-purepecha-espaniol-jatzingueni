@@ -14,8 +14,4 @@ De la misma manera, este proyecto implica recolectar datos, crear una estructura
 
 Esta aplicación fue creada por estudiantes de la **Facultad de Ingeniería Eléctrica de la Universidad Michoacana de San Nicolás de Hidalgo**, con el objetivo de poner la tecnología al servicio de la preservación lingüística y promover el uso de las **lenguas indígenas** como parte del patrimonio cultural de México.
 
-**Participantes**
-- Uriel Felipe Vázquez Orozco  
-- Brandon Alejandro Piñón Estanislado  
-- Fernanda Montserrat Fabián Reyes
 `;

@@ -4,7 +4,9 @@ import Background from '../components/backgronds/BackgroundAbout';
 import Header from '../components/common/Header';
 import SlidingMenu from '../components/common/SlidingMenu';
 import { aboutScreenStyles } from '../styles/aboutScreenStyles';
-import { aboutText } from './aboutText';
+import { aboutText } from '../components/text/aboutText';
+import { participantsText } from '../components/text/participantsText';
+import { repositoryText } from '../components/text/repositoryText';
 import Markdown from 'react-native-markdown-display';
 
 const AboutScreen = () => {
@@ -24,8 +26,7 @@ const AboutScreen = () => {
         <Background>
             <Container style={aboutScreenStyles.container}>
                 <Header
-                    title="Acerca de
-          J'atzingueni"
+                    title="J'atzingueni"
                     onMenuPress={handleMenuPress}
                 />
 <Text style={aboutScreenStyles.subtitle}>Traductor Purépecha - Español</Text>
@@ -41,7 +42,10 @@ const AboutScreen = () => {
                             <Markdown style={{
                                 text: aboutScreenStyles.text,
                                 strong: { fontWeight: 'bold', color: aboutScreenStyles.text.color }
-                            }}>{aboutText}</Markdown>
+                            }}>
+                                {`${aboutText}\n\n${participantsText}\n\n${repositoryText}`}
+                             
+                            </Markdown>
                         </ScrollView>
                     </View>
                 </ScrollView>
