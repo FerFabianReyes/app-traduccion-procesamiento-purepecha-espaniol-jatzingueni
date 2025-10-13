@@ -6,6 +6,7 @@ export const COLORS = {
   secondary: '#587934',
   itemMenu: '#75a71ab6',
   secondaryClear: '#89ac49ff',
+  secondaryLoading: '#f7ffe0ff',
   iconsMenu: '#bedfa4ff',
   third: '#804b83e3',
   thirdClear: '#b490b6',

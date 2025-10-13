@@ -7,6 +7,7 @@ import SlidingMenu from '../components/common/SlidingMenu';
 import { globalStyles } from '../styles/globalStyles';
 import Background from '../components/backgronds/Background';
 import { useAppLogic } from '../hooks/useAppLogic';
+import Loading from '../components/common/Loading';
 
 const TranslatorScreen = () => {
   const {
@@ -43,7 +44,10 @@ const TranslatorScreen = () => {
               onSwap={swapLanguages}
               isLoading={isLoading}
             />
-
+            <Loading
+              visible={isLoading}
+              message="Extrayendo texto de la imagen..."
+            />
             <ScrollView
               showsVerticalScrollIndicator={false}
               bounces={true}
