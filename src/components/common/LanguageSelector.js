@@ -19,11 +19,12 @@ const languageItems = [
 const LanguageSelector = ({
   sourceLanguage = "Purépecha",
   targetLanguage = "Español",
-  onSwap
+  onSwap,
+  onCamera
 }) => {
   return (
     <View style={languageSelectorStyles.languageContainer}>
-      <TouchableOpacity style={languageSelectorStyles.cameraButton}>
+      <TouchableOpacity style={languageSelectorStyles.cameraButton} onPress={onCamera}>
       <View style={languageSelectorStyles.iconContainer}>
         <Ionicons
           name={languageItems[0].icon}

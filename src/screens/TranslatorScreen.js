@@ -7,6 +7,7 @@ import SlidingMenu from '../components/common/SlidingMenu';
 import { useTranslator } from '../hooks/useTranslator';
 import { globalStyles } from '../styles/globalStyles';
 import Background from '../components/backgronds/Background';
+import { useOCR } from '../hooks/useOCR';
 
 const TranslatorScreen = () => {
   const {
@@ -19,6 +20,15 @@ const TranslatorScreen = () => {
     handleMenuPress,
     closeMenu,
   } = useTranslator();
+
+  const {
+    image,
+    extractedText,
+    loading,
+    takePhoto,
+    pickImage,
+    clearAll
+  } = useOCR();
 
   const Container = Platform.OS === 'web' ? View : SafeAreaView;
 
@@ -36,6 +46,7 @@ const TranslatorScreen = () => {
           <View style={globalStyles.mainContent}>
             {/* LanguageSelector fijo */}
             <LanguageSelector
+              onCamera={takePhoto}
               sourceLanguage={sourceLanguage}
               targetLanguage={targetLanguage}
               onSwap={swapLanguages}
