@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { extractTextWithOCR } from '../services/ocrService';
@@ -8,20 +8,19 @@ export const useOCR = () => {
   const [extractedText, setExtractedText] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Solicitar permisos de cámara
-  const requestPermission = async () => {
+  // ⭐ useCallback para todas las funciones
+  const requestPermission = useCallback(async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
       Alert.alert('Permiso necesario', 'Se necesita permiso para usar la cámara');
       return false;
     }
     return true;
-  };
+  }, []);
 
-  // Tomar foto con la cámara
-  const takePhoto = async () => {
+  const takePhoto = useCallback(async () => {
     const hasPermission = await requestPermission();
-    if (!hasPermission) return;
+    if (!hasPermission) return false;
 
     try {
       const result = await ImagePicker.launchCameraAsync({
@@ -40,10 +39,9 @@ export const useOCR = () => {
       Alert.alert('Error', 'No se pudo tomar la foto');
     }
     return false;
-  };
+  }, [requestPermission]);
 
-  // Seleccionar imagen de la galería
-  const pickImage = async () => {
+  const pickImage = useCallback(async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -62,10 +60,9 @@ export const useOCR = () => {
       Alert.alert('Error', 'No se pudo seleccionar la imagen');
     }
     return false;
-  };
+  }, []);
 
-  // Procesar imagen con OCR
-  const processImage = async (base64Image) => {
+  const processImage = useCallback(async (base64Image) => {
     if (!base64Image) return;
 
     setLoading(true);
@@ -81,19 +78,16 @@ export const useOCR = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-
-  // Limpiar todo
-  const clearAll = () => {
+  const clearAll = useCallback(() => {
     setImage(null);
     setExtractedText('');
-  };
+  }, []);
 
-  // Actualizar texto extraído manualmente
-  const updateExtractedText = (text) => {
+  const updateExtractedText = useCallback((text) => {
     setExtractedText(text);
-  };
+  }, []);
 
   return {
     // Estado
@@ -101,7 +95,7 @@ export const useOCR = () => {
     extractedText,
     loading,
     
-    // Acciones
+    // Acciones (todas con useCallback)
     takePhoto,
     pickImage,
     processImage,
@@ -109,7 +103,7 @@ export const useOCR = () => {
     updateExtractedText,
     
     // Setters
-    setImage,
-    setExtractedText,
+    setImage: useCallback((img) => setImage(img), []),
+    setExtractedText: useCallback((text) => setExtractedText(text), []),
   };
 };

@@ -4,10 +4,9 @@ import Header from '../components/common/Header';
 import LanguageSelector from '../components/common/LanguageSelector';
 import NoteCard from '../components/translator/NoteCard';
 import SlidingMenu from '../components/common/SlidingMenu';
-import { useTranslator } from '../hooks/useTranslator';
 import { globalStyles } from '../styles/globalStyles';
 import Background from '../components/backgronds/Background';
-import { useOCR } from '../hooks/useOCR';
+import { useAppLogic } from '../hooks/useAppLogic';
 
 const TranslatorScreen = () => {
   const {
@@ -19,16 +18,9 @@ const TranslatorScreen = () => {
     swapLanguages,
     handleMenuPress,
     closeMenu,
-  } = useTranslator();
-
-  const {
-    image,
-    extractedText,
-    loading,
-    takePhoto,
-    pickImage,
-    clearAll
-  } = useOCR();
+    captureAndProcess,
+    isLoading,
+  } = useAppLogic();
 
   const Container = Platform.OS === 'web' ? View : SafeAreaView;
 
@@ -40,19 +32,18 @@ const TranslatorScreen = () => {
           style={{ flex: 1 }}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
         >
-          {/* Header fijo */}
           <Header onMenuPress={handleMenuPress} />
 
           <View style={globalStyles.mainContent}>
-            {/* LanguageSelector fijo */}
             <LanguageSelector
-              onCamera={takePhoto}
+              onCamera={() => captureAndProcess(true)}
+              onGallery={() => captureAndProcess(false)}
               sourceLanguage={sourceLanguage}
               targetLanguage={targetLanguage}
               onSwap={swapLanguages}
+              isLoading={isLoading}
             />
 
-            {/* Solo los NoteCards tienen scroll */}
             <ScrollView
               showsVerticalScrollIndicator={false}
               bounces={true}
@@ -64,7 +55,8 @@ const TranslatorScreen = () => {
                   value={note}
                   onChangeText={(text) => updateNote(index, text)}
                   placeholder={index === 0 ? 'Texto a traducir...' : 'Traducción...'}
-                  isTranslated={index === 1} placeholderTextColor="black"
+                  isTranslated={index === 1}
+                  placeholderTextColor="black"
                 />
               ))}
             </ScrollView>

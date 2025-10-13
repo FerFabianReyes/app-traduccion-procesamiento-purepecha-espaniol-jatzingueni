@@ -1,43 +1,55 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 export const useTranslator = () => {
   const [notes, setNotes] = useState(['', '']);
-  const [sourceLanguage, setSourceLanguage] = useState('Purépecha');
-  const [targetLanguage, setTargetLanguage] = useState('Español');
-  const [isMenuVisible, setIsMenuVisible] = useState(false); // Nuevo estado
+  const [sourceLanguage, setSourceLanguage] = useState('es');
+  const [targetLanguage, setTargetLanguage] = useState('en');
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
-  const updateNote = (index, text) => {
-    const updatedNotes = [...notes];
-    updatedNotes[index] = text;
-    setNotes(updatedNotes);
-  };
+  // ⭐ useCallback PARA ESTABILIZAR updateNote
+  const updateNote = useCallback((index, text) => {
+    setNotes(prevNotes => {
+      const newNotes = [...prevNotes];
+      newNotes[index] = text;
+      return newNotes;
+    });
+  }, []); // ← Dependencias vacías porque no usa estado externo
 
-  const addNote = () => {
-    setNotes([...notes, '']);
-  };
+  const swapLanguages = useCallback(() => {
+    setSourceLanguage(prev => {
+      const newTarget = prev;
+      setTargetLanguage(newTarget);
+      return targetLanguage;
+    });
+    setNotes(prevNotes => [prevNotes[1], prevNotes[0]]);
+  }, [targetLanguage]);
 
-  const swapLanguages = () => {
-    setSourceLanguage(targetLanguage);
-    setTargetLanguage(sourceLanguage);
-  };
+  const handleMenuPress = useCallback(() => {
+    setIsMenuVisible(true);
+  }, []);
 
-  const handleMenuPress = () => {
-    setIsMenuVisible(true); // Abre el menú
-  };
+  const closeMenu = useCallback(() => {
+    setIsMenuVisible(false);
+  }, []);
 
-  const closeMenu = () => {
-    setIsMenuVisible(false); // Cierra el menú
-  };
+  const setSourceLang = useCallback((lang) => {
+    setSourceLanguage(lang);
+  }, []);
+
+  const setTargetLang = useCallback((lang) => {
+    setTargetLanguage(lang);
+  }, []);
 
   return {
     notes,
     sourceLanguage,
     targetLanguage,
     isMenuVisible,
-    updateNote,
-    addNote,
+    updateNote, // ← Ahora estable entre renders
     swapLanguages,
     handleMenuPress,
     closeMenu,
+    setSourceLanguage: setSourceLang,
+    setTargetLanguage: setTargetLang,
   };
 };
