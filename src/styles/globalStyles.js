@@ -1,5 +1,6 @@
 import { StyleSheet, StatusBar, Dimensions, Platform } from 'react-native';
 import { COLORS } from './colors';
+import { Button } from 'react-native-web';
 
 const { height } = Dimensions.get('window');
 
@@ -28,5 +29,18 @@ export const globalStyles = StyleSheet.create({
     
     // Sombra para Android
     elevation: 28,
-  }
+  },
+  button: {
+    backgroundColor: COLORS.thirdClear,
+    borderRadius: 10,
+    padding: 20,
+  },
+  translateText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: COLORS.third,
+    flex: 1,
+    textAlign: 'center',
+    
+  },
 });

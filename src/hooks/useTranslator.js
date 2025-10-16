@@ -6,14 +6,13 @@ export const useTranslator = () => {
   const [targetLanguage, setTargetLanguage] = useState('tsz');
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
-  // ⭐ useCallback PARA ESTABILIZAR updateNote
   const updateNote = useCallback((index, text) => {
     setNotes(prevNotes => {
       const newNotes = [...prevNotes];
       newNotes[index] = text;
       return newNotes;
     });
-  }, []); // ← Dependencias vacías porque no usa estado externo
+  }, []); // Dependencias vacías porque no usa estado externo
 
   const swapLanguages = useCallback(() => {
     setSourceLanguage(prev => {
@@ -45,7 +44,7 @@ export const useTranslator = () => {
     sourceLanguage,
     targetLanguage,
     isMenuVisible,
-    updateNote, // ← Ahora estable entre renders
+    updateNote, 
     swapLanguages,
     handleMenuPress,
     closeMenu,

@@ -23,28 +23,43 @@ export const useAppLogic = () => {
       
       // Actualizar índice 0 con texto extraído
       translator.updateNote(0, newText);
-      
-      // handleAutoTranslate(newText);
     }
   }, [ocr.extractedText, translator.updateNote]); 
 
-  const handleAutoTranslate = useCallback(async (text) => {
-    if (!text.trim()) return;
+  // Traducción manual al presionar botón
+  const handleManualTranslate = useCallback(async () => {
+    const textToTranslate = translator.notes[0];
+    
+    if (!textToTranslate || !textToTranslate.trim()) {
+      console.log('No hay texto para traducir');
+      return;
+    }
     
     setIsTranslating(true);
     try {
-      console.log('Iniciando traducción automática...');
-      // const translatedText = await elModeloDeÑon(text);
-      // translator.updateNote(1, translatedText);
+      console.log('Iniciando traducción manual...');
       
-      // Simulación temporal
-      // translator.updateNote(1, `[Traducido]: ${text}`);
+      // Sólo es una simulación
+      //const simulatedTranslation = `[Traducido]: ${textToTranslate}`;
+      const simulatedTranslation = simularTraduccionPurépecha(textToTranslate);
+      
+      // Actualizar el índice 1 con la "traducción"
+      translator.updateNote(1, simulatedTranslation);
+      
+      console.log('Traducción simulada completada');
+      
     } catch (error) {
-      console.error('Error en traducción automática:', error);
+      console.error('Error en traducción manual:', error);
+      //  mostrar un mensaje de error al usuario
     } finally {
       setIsTranslating(false);
     }
-  }, [translator.updateNote]);
+  }, [translator.notes, translator.updateNote]);
+
+  // Sólo es una simulación
+  const simularTraduccionPurépecha = (texto) => {
+    return texto + ' (simulado)';
+  };
 
   const captureAndProcess = useCallback(async (useCamera = true) => {
     try {
@@ -73,8 +88,8 @@ export const useAppLogic = () => {
     isLoading,
     isTranslating,
     
-    // Funciones especializadas (todas estables)
+    // Funciones
     captureAndProcess,
-    handleAutoTranslate,
+    handleManualTranslate, 
   };
 };
