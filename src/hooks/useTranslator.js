@@ -2,8 +2,8 @@ import { useState, useCallback } from 'react';
 
 export const useTranslator = () => {
   const [notes, setNotes] = useState(['', '']);
-  const [sourceLanguage, setSourceLanguage] = useState('es');
-  const [targetLanguage, setTargetLanguage] = useState('tsz');
+  const [sourceLanguage, setSourceLanguage] = useState('Español');
+  const [targetLanguage, setTargetLanguage] = useState('Purépecha');
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const updateNote = useCallback((index, text) => {

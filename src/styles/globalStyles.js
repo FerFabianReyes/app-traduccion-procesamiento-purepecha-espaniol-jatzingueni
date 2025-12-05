@@ -30,17 +30,25 @@ export const globalStyles = StyleSheet.create({
     // Sombra para Android
     elevation: 28,
   },
-  button: {
+   button: {
     backgroundColor: COLORS.thirdClear,
-    borderRadius: 10,
-    padding: 20,
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginHorizontal: 20,
+    minHeight: 50,
   },
+  
+  buttonDisabled: {
+    backgroundColor: COLORS.thirdClear,
+    opacity: 0.6,
+  },
+  
   translateText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: COLORS.third,
-    flex: 1,
-    textAlign: 'center',
-    
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

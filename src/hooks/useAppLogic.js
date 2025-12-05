@@ -6,32 +6,55 @@ export const useAppLogic = () => {
   const ocr = useOCR();
   const translator = useTranslator();
   const [isTranslating, setIsTranslating] = useState(false);
-  
-  // trackear texto anterior y evitar updates duplicados
   const previousExtractedText = useRef('');
 
+   const normalizarTexto = (texto) => {
+    if (!texto) return '';
+    return texto
+      .toLowerCase()
+      .replace(/\s+/g, ' ')
+      .replace(/\n/g, ' ')
+      .trim();
+  };
+
+  const mapeoTraducciones = [
+    {
+      español: 'Para beneficiarnos de los buenos consejos que recibamos, tenemos que ser humildes y modestos',
+      purepecha: 'Parajtsïni marhuacheni konseju ma, jatsiskachi para kaxumbitiini ka jiókuarhini eskachi no iámindu ambe míteska'
+    },
+    {
+      español: 'La sabiduría acompaña a los que piden consejo', 
+      purepecha: 'Ima kʼuiripu enga kurhajkuarhijka konsejuni xarhatasïndi jánhaskakua'
+    }
+  ];
+
+  // OCR → NoteCard[0]
   useEffect(() => {
-    // Solo procesar si hay texto nuevo y diferente al anterior
     const newText = ocr.extractedText;
     
-    if (newText && 
-        newText.trim() !== '' && 
-        newText !== previousExtractedText.current) {
-      
-      console.log('Actualizando texto extraído en traductor:', newText.substring(0, 50) + '...');
+    if (newText && newText.trim() !== '' && newText !== previousExtractedText.current) {
       previousExtractedText.current = newText;
-      
-      // Actualizar índice 0 con texto extraído
       translator.updateNote(0, newText);
     }
   }, [ocr.extractedText, translator.updateNote]); 
 
+  // Limpiar NoteCard[1] cuando NoteCard[0] esté vacío
+  useEffect(() => {
+    if ((!translator.notes[0] || translator.notes[0].trim() === '') && 
+        translator.notes[1] && translator.notes[1].trim() !== '') {
+      translator.updateNote(1, '');
+    }
+  }, [translator.notes[0], translator.updateNote]);
   // Traducción manual al presionar botón
   const handleManualTranslate = useCallback(async () => {
     const textToTranslate = translator.notes[0];
     
     if (!textToTranslate || !textToTranslate.trim()) {
       console.log('No hay texto para traducir');
+
+      if (translator.notes[1] && translator.notes[1].trim() !== '') {
+        translator.updateNote(1, '');
+      }
       return;
     }
     
@@ -40,7 +63,6 @@ export const useAppLogic = () => {
       console.log('Iniciando traducción manual...');
       
       // Sólo es una simulación
-      //const simulatedTranslation = `[Traducido]: ${textToTranslate}`;
       const simulatedTranslation = simularTraduccionPurépecha(textToTranslate);
       
       // Actualizar el índice 1 con la "traducción"
@@ -50,15 +72,26 @@ export const useAppLogic = () => {
       
     } catch (error) {
       console.error('Error en traducción manual:', error);
-      //  mostrar un mensaje de error al usuario
+      // mostrar un mensaje de error al usuario
     } finally {
       setIsTranslating(false);
     }
   }, [translator.notes, translator.updateNote]);
 
   // Sólo es una simulación
-  const simularTraduccionPurépecha = (texto) => {
-    return texto + ' (simulado)';
+   const simularTraduccionPurépecha = (texto) => {
+    const textoNormalizado = normalizarTexto(texto);
+    
+    // Buscar coincidencia exacta o parcial
+    const traduccion = mapeoTraducciones.find(item => 
+      normalizarTexto(item.español) === textoNormalizado
+    );
+    
+    if (traduccion) {
+      return traduccion.purepecha;
+    }
+    
+    return texto + ' [Simulación]';
   };
 
   const captureAndProcess = useCallback(async (useCamera = true) => {

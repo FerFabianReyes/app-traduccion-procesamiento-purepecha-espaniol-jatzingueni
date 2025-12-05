@@ -20,9 +20,9 @@ const TranslatorScreen = () => {
     handleMenuPress,
     closeMenu,
     captureAndProcess,
-    handleManualTranslate, // 🆕 NUEVA FUNCIÓN
+    handleManualTranslate, 
     isLoading,
-    isTranslating, // 🆕 NUEVO ESTADO
+    isTranslating, 
   } = useAppLogic();
 
   const Container = Platform.OS === 'web' ? View : SafeAreaView;
@@ -46,8 +46,7 @@ const TranslatorScreen = () => {
               onSwap={swapLanguages}
               isLoading={isLoading}
             />
-            
-            {/* 🆕 Loading muestra diferente mensaje según lo que esté haciendo */}
+ 
             <Loading
               visible={isLoading}
               message={isTranslating ? "Traduciendo..." : "Extrayendo texto de la imagen..."}
