@@ -7,18 +7,15 @@ import { aboutScreenStyles } from '../styles/aboutScreenStyles';
 import { aboutText } from '../components/text/aboutText';
 import { participantsText } from '../components/text/participantsText';
 import { repositoryText } from '../components/text/repositoryText';
+import { useAppLogic } from '../hooks/useAppLogic';
 import Markdown from 'react-native-markdown-display';
 
 const AboutScreen = () => {
-    const [isMenuVisible, setIsMenuVisible] = React.useState(false);
-
-    const handleMenuPress = () => {
-        setIsMenuVisible(true);
-    };
-
-    const closeMenu = () => {
-        setIsMenuVisible(false);
-    };
+    const {
+        isMenuVisible,
+        handleMenuPress,
+        closeMenu,
+    } = useAppLogic();
 
     const Container = Platform.OS === 'web' ? View : SafeAreaView;
 
@@ -29,13 +26,11 @@ const AboutScreen = () => {
                     title="J'atzingueni"
                     onMenuPress={handleMenuPress}
                 />
-<Text style={aboutScreenStyles.subtitle}>Traductor Purépecha - Español</Text>
+                <Text style={aboutScreenStyles.subtitle}>Traductor Purépecha - Español</Text>
                 <ScrollView
                     style={aboutScreenStyles.content}
                     contentContainerStyle={aboutScreenStyles.contentContainer}
                 >
-                    
-
                     <View style={aboutScreenStyles.section}>
                         <Text style={aboutScreenStyles.sectionTitle}>Sobre la aplicación</Text>
                         <ScrollView>
@@ -44,7 +39,6 @@ const AboutScreen = () => {
                                 strong: { fontWeight: 'bold', color: aboutScreenStyles.text.color }
                             }}>
                                 {`${aboutText}\n\n${participantsText}\n\n${repositoryText}`}
-                             
                             </Markdown>
                         </ScrollView>
                     </View>

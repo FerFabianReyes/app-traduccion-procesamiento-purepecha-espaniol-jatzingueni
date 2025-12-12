@@ -6,9 +6,10 @@ export const useAppLogic = () => {
   const ocr = useOCR();
   const translator = useTranslator();
   const [isTranslating, setIsTranslating] = useState(false);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
   const previousExtractedText = useRef('');
 
-   const normalizarTexto = (texto) => {
+  const normalizarTexto = (texto) => {
     if (!texto) return '';
     return texto
       .toLowerCase()
@@ -20,11 +21,11 @@ export const useAppLogic = () => {
   const mapeoTraducciones = [
     {
       español: 'Para beneficiarnos de los buenos consejos que recibamos, tenemos que ser humildes y modestos',
-      purepecha: 'Parajtsïni marhuacheni konseju ma, jatsiskachi para kaxumbitiini ka jiókuarhini eskachi no iámindu ambe míteska'
+      purepecha: 'ParajtsÏni marhuacheni konseju ma, jatsiskachi para kaxumbitiini ka jiÃ³kuarhini eskachi no iÃ¡mindu ambe mÃ­teska'
     },
     {
       español: 'La sabiduría acompaña a los que piden consejo', 
-      purepecha: 'Ima kʼuiripu enga kurhajkuarhijka konsejuni xarhatasïndi jánhaskakua'
+      purepecha: 'Ima kÊ¼uiripu enga kurhajkuarhijka konsejuni xarhatasÃ¯ndi jÃ¡nhaskakua'
     }
   ];
 
@@ -36,7 +37,7 @@ export const useAppLogic = () => {
       previousExtractedText.current = newText;
       translator.updateNote(0, newText);
     }
-  }, [ocr.extractedText, translator.updateNote]); 
+  }, [ocr.extractedText]);
 
   // Limpiar NoteCard[1] cuando NoteCard[0] esté vacío
   useEffect(() => {
@@ -44,7 +45,8 @@ export const useAppLogic = () => {
         translator.notes[1] && translator.notes[1].trim() !== '') {
       translator.updateNote(1, '');
     }
-  }, [translator.notes[0], translator.updateNote]);
+  }, [translator.notes[0]]);
+
   // Traducción manual al presionar botón
   const handleManualTranslate = useCallback(async () => {
     const textToTranslate = translator.notes[0];
@@ -72,14 +74,13 @@ export const useAppLogic = () => {
       
     } catch (error) {
       console.error('Error en traducción manual:', error);
-      // mostrar un mensaje de error al usuario
     } finally {
       setIsTranslating(false);
     }
-  }, [translator.notes, translator.updateNote]);
+  }, [translator.notes[0]]);
 
   // Sólo es una simulación
-   const simularTraduccionPurépecha = (texto) => {
+  const simularTraduccionPurépecha = (texto) => {
     const textoNormalizado = normalizarTexto(texto);
     
     // Buscar coincidencia exacta o parcial
@@ -105,7 +106,16 @@ export const useAppLogic = () => {
     } catch (error) {
       console.error('Error en captura:', error);
     }
-  }, [ocr.takePhoto, ocr.pickImage]);
+  }, [ocr]);
+
+  // Manejo del menú
+  const handleMenuPress = useCallback(() => {
+    setIsMenuVisible(prev => !prev);
+  }, []);
+
+  const closeMenu = useCallback(() => {
+    setIsMenuVisible(false);
+  }, []);
 
   // Estado de carga combinado
   const isLoading = ocr.loading || isTranslating;
@@ -120,9 +130,12 @@ export const useAppLogic = () => {
     // Estados combinados
     isLoading,
     isTranslating,
+    isMenuVisible,
     
     // Funciones
     captureAndProcess,
-    handleManualTranslate, 
+    handleManualTranslate,
+    handleMenuPress,
+    closeMenu,
   };
 };
