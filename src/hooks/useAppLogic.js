@@ -13,21 +13,65 @@ export const useAppLogic = () => {
     if (!texto) return '';
     return texto
       .toLowerCase()
-      .replace(/\s+/g, ' ')
-      .replace(/\n/g, ' ')
-      .trim();
+      .trim()
+      .replace(/[¿?¡!]/g, '')
+      .replace(/\s+/g, ' ');
   };
 
-  const mapeoTraducciones = [
-    {
-      español: 'Para beneficiarnos de los buenos consejos que recibamos, tenemos que ser humildes y modestos',
-      purepecha: 'ParajtsÏni marhuacheni konseju ma, jatsiskachi para kaxumbitiini ka jiÃ³kuarhini eskachi no iÃ¡mindu ambe mÃ­teska'
-    },
-    {
-      español: 'La sabiduría acompaña a los que piden consejo', 
-      purepecha: 'Ima kÊ¼uiripu enga kurhajkuarhijka konsejuni xarhatasÃ¯ndi jÃ¡nhaskakua'
-    }
+  // Base de datos de palabras/frases
+  const diccionario = [
+    { purepecha: 'Náandi', español: 'Madre, mamá' },
+    { purepecha: 'akamba', español: 'maguey' },
+    { purepecha: 'ch\'anakua', español: 'juego, deporte' },
+    { purepecha: 'ch\'anakua uandakua', español: 'chiste' },
+    { purepecha: 'ch\'anani', español: 'jugar' },
+    { purepecha: 'itsï uerati', español: 'fuente de agua, manantial' },
+    { purepecha: 'Namupuru', español: '¿Cuántas partes?, ¿en cuántas partes?' },
+    { purepecha: '¿Naniesïki?', español: '¿En dónde es?' },
+    { purepecha: 'Nanindarku', español: 'En cualquier parte' },
+    { purepecha: 'Naniri', español: '¿A dónde vas?' },
+    { purepecha: 'Nanita', español: 'Abuela' },
+    { purepecha: 'Naxanirhu', español: 'En qué número, en qué orden' },
+    { purepecha: '¿Naxanisïki?', español: '¿Cuánto es?' },
+    { purepecha: 'Náxaru', español: 'Posiblemente' },
+    { purepecha: 'Nipá', español: 'Adiós, me voy' },
+    { purepecha: 'Achoki', español: 'Ajolote' },
+    { purepecha: 'Ambajtsïtakua', español: 'Peine, cepillo' },
+    { purepecha: 'Ambakerani', español: 'Limpiarlo, Sanarlo' },
+    { purepecha: 'jauiri', español: 'pelo, cabello' },
+    { purepecha: 'jaxiti', español: 'sucio' },
+    { purepecha: 'jeiaki', español: 'ratón' },
+    { purepecha: 'jeiaki iuiri', español: 'rata' },
+    { purepecha: 'jeiapanhintani', español: 'gustar, agradar' },
   ];
+
+  // Función para buscar traducción respetando el idioma seleccionado
+  const buscarTraduccion = (texto) => {
+    const textoNormalizado = normalizarTexto(texto);
+    const sourceLanguage = translator.sourceLanguage;
+    const targetLanguage = translator.targetLanguage;
+
+    // Si es Español -> Purépecha
+    if (sourceLanguage.includes('Español') && targetLanguage.includes('Purépecha')) {
+      for (let item of diccionario) {
+        const españolNormalizado = normalizarTexto(item.español);
+        if (españolNormalizado.includes(textoNormalizado) || textoNormalizado.includes(españolNormalizado)) {
+          return item.purepecha;
+        }
+      }
+    }
+    // Si es Purépecha -> Español
+    else if (sourceLanguage.includes('Purépecha') && targetLanguage.includes('Español')) {
+      for (let item of diccionario) {
+        const purepechaNormalizado = normalizarTexto(item.purepecha);
+        if (purepechaNormalizado === textoNormalizado || purepechaNormalizado.includes(textoNormalizado)) {
+          return item.español;
+        }
+      }
+    }
+
+    return null;
+  };
 
   // OCR → NoteCard[0]
   useEffect(() => {
@@ -62,38 +106,24 @@ export const useAppLogic = () => {
     
     setIsTranslating(true);
     try {
-      console.log('Iniciando traducción manual...');
+      console.log('Iniciando traducción...');
       
-      // Sólo es una simulación
-      const simulatedTranslation = simularTraduccionPurépecha(textToTranslate);
+      const traduccion = buscarTraduccion(textToTranslate);
       
-      // Actualizar el índice 1 con la "traducción"
-      translator.updateNote(1, simulatedTranslation);
+      if (traduccion) {
+        translator.updateNote(1, traduccion);
+      } else {
+        translator.updateNote(1, 'Ayúdanos a llevar las lenguas más allá 🌍');
+      }
       
-      console.log('Traducción simulada completada');
+      console.log('Traducción completada');
       
     } catch (error) {
       console.error('Error en traducción manual:', error);
     } finally {
       setIsTranslating(false);
     }
-  }, [translator.notes[0]]);
-
-  // Sólo es una simulación
-  const simularTraduccionPurépecha = (texto) => {
-    const textoNormalizado = normalizarTexto(texto);
-    
-    // Buscar coincidencia exacta o parcial
-    const traduccion = mapeoTraducciones.find(item => 
-      normalizarTexto(item.español) === textoNormalizado
-    );
-    
-    if (traduccion) {
-      return traduccion.purepecha;
-    }
-    
-    return texto + ' [Simulación]';
-  };
+  }, [translator.notes[0], translator.sourceLanguage, translator.targetLanguage]);
 
   const captureAndProcess = useCallback(async (useCamera = true) => {
     try {
