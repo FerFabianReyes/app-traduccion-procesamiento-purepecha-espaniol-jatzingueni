@@ -1,8 +1,8 @@
-import React from 'react';
-import { SafeAreaView, View, Text, Platform, ScrollView, TouchableOpacity, Dimensions, Linking } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, View, Text, Platform, ScrollView, TouchableOpacity, Dimensions, Linking, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Background from '../components/backgronds/Background';
-import Header from '../components/common/Header';
+import Background from '../components/backgronds/BackgroundPrincipal';
+import HeaderPrincipal from '../components/common/HeaderPrincipal';
 import SlidingMenu from '../components/common/SlidingMenu';
 import { pagPrincipalStyles } from '../styles/pagPrincipalStyles';
 import { useAppLogic } from '../hooks/useAppLogic';
@@ -18,41 +18,30 @@ const PagPrincipalScreen = () => {
 
   const navigation = useNavigation();
   const { width } = Dimensions.get('window');
+  const [currentDonador, setCurrentDonador] = useState(0);
 
   const donadores = [
-    { id: 1, nombre: 'María García' },
-    { id: 2, nombre: 'Juan López' },
-    { id: 3, nombre: 'Carlos Méndez' },
-    { id: 4, nombre: 'Ana Martínez' },
-    { id: 5, nombre: 'Roberto Silva' },
+    { id: 1, nombre: 'Aaron Uriel' },
+    { id: 2, nombre: 'Roy Alba' },
+    { id: 3, nombre: 'Poncho Morales' },
+    { id: 4, nombre: 'Beto Ramos' },
+    { id: 5, nombre: 'Uriel Felipe' },
+    { id: 6, nombre: 'Fer Fabian' },
+    { id: 7, nombre: 'Brandon Piñon' },
+
   ];
 
-  const eventos = [
-    { 
-      id: 1, 
-      titulo: 'Clase de Purépecha Nivel I',
-      fecha: '15 de Enero, 2025',
-      hora: '18:00 - 19:30',
-      descripcion: 'Introducción al idioma purépecha'
-    },
-    { 
-      id: 2, 
-      titulo: 'Conversación Práctica',
-      fecha: '22 de Enero, 2025',
-      hora: '19:00 - 20:00',
-      descripcion: 'Práctica de diálogos cotidianos'
-    },
-    { 
-      id: 3, 
-      titulo: 'Taller de Gramática',
-      fecha: '29 de Enero, 2025',
-      hora: '17:30 - 19:00',
-      descripcion: 'Estructura gramatical del purépecha'
-    },
-  ];
+  // Carrusel automático de donadores
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDonador((prev) => (prev + 1) % donadores.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [donadores.length]);
 
   const handleDonationPress = () => {
-    const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSc...'; // Reemplaza con tu URL real
+    const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSc...';
     Linking.openURL(googleFormUrl).catch(() => {
       console.log('No se pudo abrir el formulario de donaciones');
     });
@@ -63,18 +52,60 @@ const PagPrincipalScreen = () => {
   return (
     <Background>
       <Container style={pagPrincipalStyles.container}>
-        <Header onMenuPress={handleMenuPress} />
+        <View style={pagPrincipalStyles.headerWrapper}>
+          <HeaderPrincipal onMenuPress={handleMenuPress} />
+          
+          {/* Carrusel de donadores */}
+          <View style={pagPrincipalStyles.carouselContainer}>
+            <Text style={pagPrincipalStyles.carouselLabel}>Donadores Recientes</Text>
+            <View style={pagPrincipalStyles.carouselContent}>
+              <TouchableOpacity 
+                style={pagPrincipalStyles.carouselArrow}
+                onPress={() => setCurrentDonador((prev) => (prev - 1 + donadores.length) % donadores.length)}
+              >
+                <Ionicons name="chevron-back" size={20} color={COLORS.third} />
+              </TouchableOpacity>
+              
+              <View style={pagPrincipalStyles.donadorDisplay}>
+                <Ionicons 
+                  name="checkmark-circle" 
+                  size={24} 
+                  color={COLORS.secondaryClear}
+                  style={{ marginRight: 10 }}
+                />
+                <Text style={pagPrincipalStyles.donadorDisplayName}>
+                  {donadores[currentDonador].nombre}
+                </Text>
+              </View>
+              
+              <TouchableOpacity 
+                style={pagPrincipalStyles.carouselArrow}
+                onPress={() => setCurrentDonador((prev) => (prev + 1) % donadores.length)}
+              >
+                <Ionicons name="chevron-forward" size={20} color={COLORS.third} />
+              </TouchableOpacity>
+            </View>
+
+            {/* Indicadores de posición */}
+            <View style={pagPrincipalStyles.dotsContainer}>
+              {donadores.map((_, index) => (
+                <View
+                  key={index}
+                  style={[
+                    pagPrincipalStyles.dot,
+                    index === currentDonador && pagPrincipalStyles.activeDot,
+                  ]}
+                />
+              ))}
+            </View>
+          </View>
+        </View>
 
         <ScrollView
           showsVerticalScrollIndicator={false}
           bounces={true}
           keyboardShouldPersistTaps="handled"
         >
-          {/* Hero Section */}
-          <View style={pagPrincipalStyles.heroSection}>
-            <Text style={pagPrincipalStyles.mainTitle}>J'atzingueni</Text>
-            <Text style={pagPrincipalStyles.subtitle}>Traductor Purépecha - Español</Text>
-          </View>
 
           {/* Misión y Visión */}
           <View style={pagPrincipalStyles.missionContainer}>
@@ -87,7 +118,7 @@ const PagPrincipalScreen = () => {
               />
               <Text style={pagPrincipalStyles.cardTitle}>Misión</Text>
               <Text style={pagPrincipalStyles.cardText}>
-                Preservar y promover el idioma purépecha mediante herramientas tecnológicas accesibles, facilitando la comunicación y el aprendizaje para las comunidades indígenas.
+                Preservar, fortalecer y difundir las lenguas minoritarias mediante el uso de la tecnología, creando herramientas abiertas de traducción y documentación que promuevan la diversidad lingüística, cultural y de pensamiento. Buscamos acercar el conocimiento y la comunicación entre comunidades, fomentando la inclusión y el respeto hacia las lenguas originarias.
               </Text>
             </View>
 
@@ -100,7 +131,7 @@ const PagPrincipalScreen = () => {
               />
               <Text style={pagPrincipalStyles.cardTitle}>Visión</Text>
               <Text style={pagPrincipalStyles.cardText}>
-                Ser la plataforma líder en traducción y educación del idioma purépecha, asegurando su continuidad y vitalidad para las futuras generaciones.
+               Convertirnos en una fundación líder en tecnología lingüística para lenguas minoritarias, reconocida por su compromiso ético, su modelo abierto y su impacto cultural. Aspiramos a construir una red global de colaboración que impulse la revitalización de las lenguas en peligro y el acceso equitativo a la información en cualquier idioma.
               </Text>
             </View>
           </View>
@@ -109,7 +140,7 @@ const PagPrincipalScreen = () => {
           <View style={pagPrincipalStyles.donationSection}>
             <Text style={pagPrincipalStyles.sectionTitle}>Apoya Nuestro Proyecto</Text>
             <Text style={pagPrincipalStyles.sectionDescription}>
-              Tu donación nos ayuda a mejorar y mantener esta herramienta para la comunidad purépecha.
+              Tu donación nos ayuda a mejorar y mantener esta herramienta para la comunidad.
             </Text>
             <TouchableOpacity 
               style={pagPrincipalStyles.donationButton}
@@ -125,45 +156,22 @@ const PagPrincipalScreen = () => {
             </TouchableOpacity>
           </View>
 
-          {/* Donadores Recientes */}
-          <View style={pagPrincipalStyles.donadoresSection}>
-            <Text style={pagPrincipalStyles.sectionTitle}>Donadores Recientes</Text>
-            <View style={pagPrincipalStyles.donadorsList}>
-              {donadores.map((donador) => (
-                <View key={donador.id} style={pagPrincipalStyles.donadorItem}>
-                  <Ionicons 
-                    name="checkmark-circle" 
-                    size={20} 
-                    color={COLORS.secondaryClear}
-                  />
-                  <Text style={pagPrincipalStyles.donadorName}>{donador.nombre}</Text>
-                </View>
-              ))}
-            </View>
-          </View>
-
-          {/* Eventos y Clases */}
-          <View style={pagPrincipalStyles.eventosSection}>
-            <Text style={pagPrincipalStyles.sectionTitle}>Próximas Clases y Eventos</Text>
-            <View style={pagPrincipalStyles.eventosList}>
-              {eventos.map((evento) => (
-                <View key={evento.id} style={pagPrincipalStyles.eventoCard}>
-                  <View style={pagPrincipalStyles.eventoHeader}>
-                    <Text style={pagPrincipalStyles.eventoTitulo}>{evento.titulo}</Text>
-                    <Ionicons 
-                      name="calendar-outline" 
-                      size={20} 
-                      color={COLORS.third}
-                    />
-                  </View>
-                  <Text style={pagPrincipalStyles.eventoFecha}>{evento.fecha}</Text>
-                  <Text style={pagPrincipalStyles.eventoHora}>
-                    <Ionicons name="time-outline" size={16} color={COLORS.textPrimary} />
-                    {' '}{evento.hora}
-                  </Text>
-                  <Text style={pagPrincipalStyles.eventoDescripcion}>{evento.descripcion}</Text>
-                </View>
-              ))}
+          {/* Anuncio de Próximas Clases */}
+          <View style={pagPrincipalStyles.announcementSection}>
+            <View style={pagPrincipalStyles.announcementCard}>
+              <Ionicons 
+                name="megaphone-outline" 
+                size={40} 
+                color={COLORS.secondaryClear}
+                style={{ marginBottom: 15 }}
+              />
+              <Text style={pagPrincipalStyles.announcementTitle}>Próximamente</Text>
+              <Text style={pagPrincipalStyles.announcementText}>
+                Se darán clases en línea de Purépecha
+              </Text>
+              <Text style={pagPrincipalStyles.announcementSubtext}>
+                Mantente atento para más información
+              </Text>
             </View>
           </View>
 

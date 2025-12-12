@@ -7,34 +7,91 @@ export const pagPrincipalStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'transparent',
-    paddingTop: 20,
+    paddingTop: 0,
   },
 
-  // Hero Section
-  heroSection: {
-    backgroundColor: COLORS.third,
-    borderRadius: 40,
-    padding: 40,
-    marginTop: 20,
-    marginHorizontal: 20,
+  headerWrapper: {
+    backgroundColor: 'transparent',
+  },
+
+  // Carrusel de donadores
+  carouselContainer: {
+    paddingHorizontal: 60,
+    paddingVertical: 10,
+    backgroundColor: 'transparent',
+  },
+
+  carouselLabel: {
+    fontSize: 14,
+    color: COLORS.textPrimary,
+    marginBottom: 10,
+    marginLeft: 10,
+  },
+
+  carouselContent: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: COLORS.thirdShade,
+    borderWidth: 1,
+    borderColor: COLORS.cardBorder,
+    borderRadius: 15,
+    paddingVertical: 5,
+    paddingHorizontal: 18,
+  },
+
+  carouselArrow: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 28,
+    alignItems: 'center',
+  },
+
+  donadorDisplay: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+
+  donadorDisplayName: {
+    fontSize: 14,
+    color: COLORS.textPrimary,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+
+  dotsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 7,
+    gap: 10,
+  },
+
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: COLORS.cardBorder,
+  },
+
+  activeDot: {
+    backgroundColor: COLORS.third,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
   },
 
   mainTitle: {
-    fontSize: 48,
+    fontSize: 30,
     fontWeight: 'bold',
     color: COLORS.textLanguage,
     marginBottom: 10,
   },
 
   subtitle: {
-    fontSize: 18,
+    fontSize: 15,
     color: COLORS.textPrimary,
     fontStyle: 'italic',
   },
@@ -50,7 +107,7 @@ export const pagPrincipalStyles = StyleSheet.create({
   },
 
   missionCard: {
-    backgroundColor: COLORS.primaryShade,
+    backgroundColor: COLORS.missionShade,
     borderWidth: 1,
     borderColor: COLORS.cardBorder,
     borderRadius: 20,
@@ -129,82 +186,44 @@ export const pagPrincipalStyles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  // Donadores
-  donadoresSection: {
+
+
+  // Anuncio de Próximas Clases
+  announcementSection: {
     paddingHorizontal: 20,
     paddingVertical: 25,
   },
 
-  donadorsList: {
-    backgroundColor: COLORS.thirdShade,
-    borderWidth: 1,
-    borderColor: COLORS.cardBorder,
+  announcementCard: {
+    backgroundColor: COLORS.missionShade,
+    borderWidth: 2,
+    borderColor: COLORS.secondaryClear,
     borderRadius: 20,
-    padding: 20,
-  },
-
-  donadorItem: {
-    flexDirection: 'row',
+    padding: 30,
     alignItems: 'center',
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.cardBorder,
+    justifyContent: 'center',
   },
 
-  donadorName: {
-    fontSize: 14,
-    color: COLORS.textPrimary,
-    marginLeft: 10,
-    flex: 1,
-  },
-
-  // Eventos
-  eventosSection: {
-    paddingHorizontal: 20,
-    paddingVertical: 25,
-  },
-
-  eventosList: {
-    gap: 15,
-  },
-
-  eventoCard: {
-    backgroundColor: COLORS.primaryShade,
-    borderWidth: 1,
-    borderColor: COLORS.cardBorder,
-    borderRadius: 20,
-    padding: 20,
-  },
-
-  eventoHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-
-  eventoTitulo: {
-    fontSize: 16,
+  announcementTitle: {
+    fontSize: 24,
     fontWeight: 'bold',
-    color: COLORS.textLanguage,
-    flex: 1,
-  },
-
-  eventoFecha: {
-    fontSize: 13,
-    color: COLORS.textPrimary,
-    marginBottom: 5,
-  },
-
-  eventoHora: {
-    fontSize: 13,
-    color: COLORS.textPrimary,
+    color: COLORS.secondaryClear,
     marginBottom: 10,
+    textAlign: 'center',
   },
 
-  eventoDescripcion: {
+  announcementText: {
+    fontSize: 16,
+    color: COLORS.textLanguage,
+    textAlign: 'center',
+    marginBottom: 8,
+    fontWeight: '600',
+  },
+
+  announcementSubtext: {
     fontSize: 13,
     color: COLORS.textPrimary,
+    textAlign: 'center',
     fontStyle: 'italic',
   },
 
