@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import PagPrincipalScreen from '../screens/PagPrincipalScreen';
 import TranslatorScreen from '../screens/TranslatorScreen';
 import AboutScreen from '../screens/AboutScreen';
-import EjemploScreen from '../screens/OCR';
 
 const Stack = createNativeStackNavigator();
 
@@ -11,7 +11,7 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Translator"
+        initialRouteName="PagPrincipal"
         screenOptions={{
           headerShown: false,
           contentStyle: {
@@ -21,6 +21,13 @@ const AppNavigator = () => {
           gestureEnabled: false,
         }}
       >
+        <Stack.Screen 
+          name="PagPrincipal" 
+          component={PagPrincipalScreen}
+          options={{
+            animation: 'simple_push',
+          }}
+        />
         <Stack.Screen 
           name="Translator" 
           component={TranslatorScreen}

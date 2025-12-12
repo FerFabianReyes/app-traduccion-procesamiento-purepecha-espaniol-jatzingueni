@@ -39,13 +39,20 @@ const SlidingMenu = ({ isVisible, onClose }) => {
   const menuItems = [
     { 
       id: 1, 
-      title: 'Traductor', 
-      screen: 'Translator',
-      icon: 'newspaper-outline',
+      title: 'Inicio', 
+      screen: 'PagPrincipal',
+      icon: 'home-outline',
       color: '#ececd0ff'
     },
     { 
       id: 2, 
+      title: 'Traductor', 
+      screen: 'Translator',
+      icon: 'language-outline',
+      color: '#ececd0ff'
+    },
+    { 
+      id: 3, 
       title: 'Acerca de', 
       screen: 'About',
       icon: 'information-circle-outline',
@@ -109,7 +116,7 @@ const SlidingMenu = ({ isVisible, onClose }) => {
                         <Ionicons 
                           name="chevron-forward-outline" 
                           size={20} 
-                          color= {COLORS.iconsMenu}
+                          color={COLORS.iconsMenu}
                           style={{ marginLeft: 'auto' }}
                         />
                       </TouchableOpacity>
