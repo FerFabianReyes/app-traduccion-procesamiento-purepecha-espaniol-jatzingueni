@@ -7,11 +7,11 @@ export const headerStyles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     paddingHorizontal: 20,
-    paddingVertical: 60,
+    paddingVertical: 20,
     ...Platform.select({
       web: {
         position: 'relative',
-        zIndex: 1000, // Importante para web
+        zIndex: 1000,
       }
     })
   },
@@ -19,15 +19,14 @@ export const headerStyles = StyleSheet.create({
     width: 30,
     height: 20,
     position: 'absolute',
-    margin: 40,
+    margin: 20,
     justifyContent: 'space-between',
-    zIndex: 1001, // Asegura que esté por encima
+    zIndex: 1001,
     ...Platform.select({
       web: {
         cursor: 'pointer',
         userSelect: 'none',
         WebkitUserSelect: 'none',
-        // Ayuda al click en web
         backgroundColor: 'transparent',
         border: 'none',
         outline: 'none',
@@ -35,7 +34,7 @@ export const headerStyles = StyleSheet.create({
     })
   },
   menuButtonWeb: {
-    transform: [{ translateZ: 0 }], // Ayuda con el rendering en web
+    transform: [{ translateZ: 0 }],
   },
   menuLine: {
     width: '100%',
@@ -43,24 +42,27 @@ export const headerStyles = StyleSheet.create({
     backgroundColor: COLORS.fourth,
     borderRadius: 20,
   },
+  // TÍTULO - Base
   title: {
-    fontSize: 40,
+    fontSize: 34,
     fontWeight: 'bold',
     color: COLORS.fourth,
-    position: 'left',
-    top: 65,
-    left: 10,
-    right: 0,
     textAlign: 'left',
-    ...Platform.select({
-      web: {
-        pointerEvents: 'none', // No interferir con clicks
-      }
-    })
   },
+  // CONTENEDOR TÍTULO - Base para móvil
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center', 
-  }
+    justifyContent: 'flex-start',
+    gap: 10,
+    marginLeft: 70,
+    flex: 1,
+    maxWidth: '100%',
+  },
+  // CONTENEDOR ICON
+  iconContainer: {
+    width: 50,
+    height: 50,
+    flexShrink: 0,
+  },
 });
